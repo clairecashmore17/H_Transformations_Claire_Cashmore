@@ -55,6 +55,9 @@ window.onload = function init() {
         vec2(.25, 0),
         vec2(.25, -.25)
     ];
+
+
+    //Translate h2 diagonally by .5 (lower left quad)
     for(let i=0; i<h1_vertices.length; i++){
         for(let j=0; j<2; j++){
            // console.log(h2_vertices[i][j])
@@ -74,7 +77,7 @@ window.onload = function init() {
     var vPosition = gl.getAttribLocation(program, "vPosition");
     gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vPosition);
-    gl.drawArrays(gl.LINE_STRIP, 0,h1_vertices.length);
+   
 
 
     // Create second buffer for 2nd H
@@ -85,8 +88,8 @@ window.onload = function init() {
 
     //Associate our shade vars again, but for 2nd H?...
     gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(vPosition);
-    gl.drawArrays(gl.LINE_STRIP, 0,h2_vertices.length);
+     gl.enableVertexAttribArray(vPosition);
+    
 
 
 
@@ -97,14 +100,6 @@ window.onload = function init() {
     // identify location for uniform value fColor
     // Using uniform because the entire shape (all points) will be the same color
     fColorLocation = gl.getUniformLocation(program, "fColor");
-
-
-
-
-    // returns the location of a specific uniform variable whic is part of webGl
-    //Program - ties back to the shaders
-    // name - string specifying the name of the uniform variable
- 
 
 
 
@@ -130,15 +125,15 @@ function render() {
         //send uniform value to fragment shader
         gl.uniform4f(fColorLocation, r, b, g, 1.0);
 
-        //draw the shape
+        //draw the two H's
       
-      //  gl.drawArrays(gl.LINE_STRIP, 0,h1_vertices.length);
+        gl.drawArrays(gl.LINE_STRIP, 0,7);
        
-      
+        gl.drawArrays(gl.LINE_STRIP, 0,7);
         
 
     
-    window.requestAnimationFrame(render);
+    requestAnimationFrame(render);
     
 
 
