@@ -6,10 +6,11 @@
 
 <script id="vertex-shader" type="x-shader/x-vertex">
  attribute vec4 vPosition;
+ uniform mat4 u_matrix;
 void
 main()
 {
-    gl_Position = vPosition;
+    gl_Position = u_matrix* vPosition;
 
 } 
 </script>

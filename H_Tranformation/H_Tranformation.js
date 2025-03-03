@@ -7,6 +7,8 @@ var gl;
 
 
 var fColorLocation;
+var matrixLocation;
+var matrix;
 // delay (or n) is the number of frames we load at
 var delay = 10;
 
@@ -57,15 +59,18 @@ window.onload = function init() {
     ];
 
 
-    //Translate h2 diagonally by .5 (lower left quad)
-    for(let i=0; i<h1_vertices.length; i++){
-        for(let j=0; j<2; j++){
-           // console.log(h2_vertices[i][j])
-            h2_vertices[i][j]= h1_vertices[i][j]-.5; 
-        }
-       
-    }
-    console.log(h2_vertices);
+    
+  // Set aside uniform to store the matrix
+    matrixLocation = gl.getUniformLocation(program, 'u_matrix');
+    //Create identity matrix
+    matrix = mat4();
+    // translate the matrix to upper right
+    matrix = translate(.5,0.5,0);
+    // use mult to then rotate after the translation
+    matrix = mult( matrix,rotate(-45,0,0,1));
+   
+    // console.log(matrix);
+ 
     // Create a buffer object, initialize it, and associate it with the
     //load into the GPU
     var bufferID = gl.createBuffer();
@@ -92,15 +97,11 @@ window.onload = function init() {
     
 
 
-
-
-
-
-
     // identify location for uniform value fColor
     // Using uniform because the entire shape (all points) will be the same color
     fColorLocation = gl.getUniformLocation(program, "fColor");
 
+  
 
 
 
@@ -124,7 +125,8 @@ function render() {
      
         //send uniform value to fragment shader
         gl.uniform4f(fColorLocation, r, b, g, 1.0);
-
+        // Set the matrix uniform in the shader
+        gl.uniformMatrix4fv(matrixLocation, false, flatten(matrix));
         //draw the two H's
       
         gl.drawArrays(gl.LINE_STRIP, 0,7);
